@@ -1,6 +1,6 @@
-from rest_framework_json_api import serializers
 from django.db import transaction
 from django.db.models import F
+from rest_framework_json_api import serializers
 
 from wallets.models import Transaction, Wallet
 
@@ -16,7 +16,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = "__all__"
-    
+
     def create(self, validated_data):
         wallet_id = validated_data['wallet'].id
         amount = validated_data['amount']

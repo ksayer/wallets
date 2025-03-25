@@ -1,7 +1,7 @@
-from rest_framework import viewsets, mixins
+from rest_framework import mixins, viewsets
 
-from wallets.models import Wallet, Transaction
-from wallets.api.v1.serializers import WalletSerializer, TransactionSerializer
+from wallets.api.v1.serializers import TransactionSerializer, WalletSerializer
+from wallets.models import Transaction, Wallet
 
 
 class WalletViewSet(
