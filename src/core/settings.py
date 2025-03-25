@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_json_api",
     "wallets",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -114,3 +115,7 @@ REST_FRAMEWORK = {
     "TEST_REQUEST_RENDERER_CLASSES": ("rest_framework_json_api.renderers.JSONRenderer",),
     "TEST_REQUEST_DEFAULT_FORMAT": "vnd.api+json",
 }
+
+
+JSON_API_PLURALIZE_TYPES = True
+JSON_API_FORMAT_TYPES = 'camelize'
