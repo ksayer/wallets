@@ -1,14 +1,15 @@
+import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 from environs import Env
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 env = Env()
 
 
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY', 'secret12312313123123123')
 DEBUG = env.bool('DEBUG', False)
 ALLOWED_HOSTS: list [str] = env.list('ALLOWED_HOSTS', [])
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,7 +94,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

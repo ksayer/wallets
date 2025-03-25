@@ -11,8 +11,10 @@ dependencies = [
     "djangorestframework-jsonapi>=7.1.0",
     "dotenv>=0.9.9",
     "environs>=14.1.1",
+    "gunicorn>=23.0.0",
     "psycopg-pool>=3.2.6",
     "psycopg[binary]>=3.2.6",
+    "whitenoise>=6.9.0",
 ]
 
 [dependency-groups]
