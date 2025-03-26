@@ -2,9 +2,9 @@ from decimal import Decimal
 
 from django.db import transaction
 from django.db.models import F
-from wallets.models import Transaction, Wallet
 from rest_framework_json_api import serializers
 
+from wallets.models import Transaction, Wallet
 
 
 def create_transaction(amount: Decimal, wallet_id: int, txid: int):

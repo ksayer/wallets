@@ -1,4 +1,6 @@
 # type: ignore
+import uuid
+from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal
 from typing import Type
 
@@ -94,6 +96,31 @@ def test__transactions__create__balance_error(api_client: APIClient, wallet_fact
     wallet = Wallet.objects.get(id=wallet.id)
     assert wallet.balance == 500
 
+
+@pytest.mark.django_db(transaction=True)
+def test__transactions__concurrent_withdraws__should_not_go_negative(
+    api_client: APIClient,
+    wallet_factory: Type[WalletFactory],
+):
+    wallet = wallet_factory(balance=500)
+    threads = 100
+
+    def withdraw():
+        return api_client.post(
+            "/api/v1/transactions/",
+            post_transaction_json(str(uuid.uuid4()), Decimal("-400"), wallet.id)
+        )
+
+    with ThreadPoolExecutor(max_workers=threads) as executor:
+        futures = [executor.submit(withdraw) for _ in range(threads)]
+
+    responses = [f.result() for f in futures]
+    statuses = [resp.status_code for resp in responses]
+    client_errors = [400] * (threads - 1)
+    assert sorted(statuses) == [201, *client_errors]
+
+    wallet.refresh_from_db()
+    assert wallet.balance >= 0
 
 
 @pytest.mark.django_db
